@@ -64,9 +64,26 @@
 
   // Hàm gọi API để chụp ảnh màn hình của trang web
   function takeScreenshot(url) {
-    // Sử dụng fetch để gửi yêu cầu HTTP
-    fetch(`https://api.apiflash.com/v1/urltoimage?access_key=45fed6c6c3df4ef0a101be4915d9bd1d&wait_until=page_loaded&url=${encodeURIComponent(url)}`)
-      .then(response => response.json())
+    var apiUrl = `https://api.apiflash.com/v1/urltoimage?access_key=45fed6c6c3df4ef0a101be4915d9bd1d&wait_until=page_loaded&url=${encodeURIComponent(url)}`;
+    
+    // Tạo một yêu cầu mới
+    var request = new Request(apiUrl, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Gửi yêu cầu và xử lý phản hồi
+    fetch(request)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         // Hiển thị ảnh chụp màn hình
         document.getElementById('screenshotImg').src = data.url;
@@ -74,7 +91,7 @@
       })
       .catch(error => {
         // Xử lý lỗi nếu có
-        console.error('Error:', error.message);
+        console.error('Error:', error);
       });
   }
 </script>

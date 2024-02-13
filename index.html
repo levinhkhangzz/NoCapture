@@ -3,58 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Close Website</title>
+<title>Website Screenshot Viewer</title>
 <style>
   body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
   }
 
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .content {
-    position: relative;
-    z-index: 1;
+  .container {
     text-align: center;
-    padding: 50px;
-    color: black;
+    margin-top: 50px;
   }
 
-  h1 {
-    font-size: 36px;
+  #urlInput {
+    width: 400px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
   }
 
-  p {
-    font-size: 18px;
+  #submitButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #screenshotImg {
+    max-width: 100%;
+    height: auto;
+    display: none;
+    margin-top: 20px;
   }
 </style>
 </head>
 <body>
-<div class="overlay"></div>
-<div class="content">
-  <h1>Welcome to My Website</h1>
-  <p>Enjoy your stay!</p>
-</div>
-<script>
-  function handleScreenshot() {
-    document.querySelector('.overlay').style.opacity = '0.5'; // Thay đổi opacity khi chụp ảnh màn hình
-    setTimeout(function() {
-      alert('Please do not take screenshots of this website.'); // Hiển thị cảnh báo
-    }, 1000); // Thời gian chờ trước khi hiển thị cảnh báo (1 giây)
-  }
 
-  window.addEventListener('blur', handleScreenshot);
+<div class="container">
+  <input type="text" id="urlInput" placeholder="Enter website URL...">
+  <button id="submitButton">Show Screenshot</button>
+  <div id="screenshotContainer">
+    <img id="screenshotImg" src="" alt="Website Screenshot">
+  </div>
+</div>
+
+<script>
+  // Gọi API và hiển thị ảnh chụp màn hình khi nút được nhấn
+  document.getElementById('submitButton').addEventListener('click', function() {
+    var url = document.getElementById('urlInput').value;
+    if (url !== '') {
+      takeScreenshot(url);
+    }
+  });
+
+  // Hàm gọi API để chụp ảnh màn hình của trang web
+  function takeScreenshot(url) {
+    // Sử dụng fetch để gửi yêu cầu HTTP
+    fetch(`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.APIFLASH_ACCESS_KEY}&wait_until=page_loaded&url=${encodeURIComponent(url)}`)
+      .then(response => response.json())
+      .then(data => {
+        // Hiển thị ảnh chụp màn hình
+        document.getElementById('screenshotImg').src = data.url;
+        document.getElementById('screenshotImg').style.display = 'block';
+      })
+      .catch(error => {
+        // Xử lý lỗi nếu có
+        console.error('Error:', error.message);
+      });
+  }
 </script>
+
 </body>
 </html>

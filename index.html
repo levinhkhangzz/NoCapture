@@ -47,17 +47,14 @@
   <p>Enjoy your stay!</p>
 </div>
 <script>
-  function handleVisibilityChange() {
-    if (document.visibilityState === 'hidden') {
-      document.querySelector('.overlay').style.opacity = '0.5'; // Thay đổi opacity khi trang được che giấu
-      setTimeout(function() {
-        alert('Please do not take screenshots or record videos of this website.'); // Hiển thị cảnh báo
-        document.location.href = 'about:blank'; // Đóng trang web
-      }, 1000); // Thời gian chờ trước khi đóng trang (1 giây)
-    }
+  function handleScreenshot() {
+    document.querySelector('.overlay').style.opacity = '0.5'; // Thay đổi opacity khi chụp ảnh màn hình
+    setTimeout(function() {
+      alert('Please do not take screenshots of this website.'); // Hiển thị cảnh báo
+    }, 1000); // Thời gian chờ trước khi hiển thị cảnh báo (1 giây)
   }
 
-  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('blur', handleScreenshot);
 </script>
 </body>
 </html>

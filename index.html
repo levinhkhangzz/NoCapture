@@ -65,7 +65,7 @@
   // Hàm gọi API để chụp ảnh màn hình của trang web
   function takeScreenshot(url) {
     // Sử dụng fetch để gửi yêu cầu HTTP
-    fetch(`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.APIFLASH_ACCESS_KEY}&wait_until=page_loaded&url=${encodeURIComponent(url)}`)
+    fetch(`https://api.apiflash.com/v1/urltoimage?access_key=45fed6c6c3df4ef0a101be4915d9bd1d&wait_until=page_loaded&url=${encodeURIComponent(url)}`)
       .then(response => response.json())
       .then(data => {
         // Hiển thị ảnh chụp màn hình
